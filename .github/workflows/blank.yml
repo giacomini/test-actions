@@ -19,18 +19,37 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    env:
+      ARTIFACTS_PATH: ${HOME}/artifacts      
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
+      - name: create artifacts dir
+        run: mkdir -p ${ARTIFACTS_PATH}/logs
+
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: echo Hello, world!
+        run: echo Hello, world! | tee ${ARTIFACTS_PATH}/logs/run.log
 
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          env
+          ls -lR ${ARTIFACTS_PATH}
+          mkdir reports
+          echo Add other actions to build, > reports/out
+          echo test, and deploy your project. > reports/out
+
+      - name: collect artifacts
+        run: |
+          mv reports ${ARTIFACTS_PATH}
+          ls -lR ${ARTIFACTS_PATH}
+
+      - name: upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: report-and-logs
+          path: ${ARTIFACTS_PATH}
