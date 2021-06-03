@@ -19,8 +19,6 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    env:
-      ARTIFACTS_PATH: ${{ github.workspace }}/artifacts      
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -28,27 +26,30 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: create artifacts dir
-        run: mkdir -p ${{ env.ARTIFACTS_PATH }}/logs
+        run: |
+          ARTIFACTS_PATH=${HOME}/artifacts
+          echo ARTIFACTS_PATH: ${ARTIFACTS_PATH}
+          echo "ARTIFACTS_PATH=${ARTIFACTS_PATH}" >> ${GITHUB_ENV}
+          mkdir -p ${ARTIFACTS_PATH}/logs
 
       - name: Run a multi-line script
         run: |
           env | sort
           echo HOME: ${HOME}
           echo ARTIFACTS_PATH: ${ARTIFACTS_PATH}
-          echo ARTIFACTS_PATH: ${{ env.ARTIFACTS_PATH }}
-          echo Hello, world! | tee ${{ env.ARTIFACTS_PATH }}/logs/run.log
-          ls -lR ${{ env.ARTIFACTS_PATH }}
+          echo Hello, world! | tee ${ARTIFACTS_PATH}/logs/run.log
+          ls -lR ${ARTIFACTS_PATH}
           mkdir reports
           echo Add other actions to build, > reports/out
           echo test, and deploy your project. > reports/out
 
       - name: collect artifacts
         run: |
-          mv reports ${{ env.ARTIFACTS_PATH }}
-          ls -lR ${{ env.ARTIFACTS_PATH }}
+          mv reports ${ARTIFACTS_PATH}
+          ls -lR ${ARTIFACTS_PATH}
 
       - name: upload artifacts
         uses: actions/upload-artifact@v2
         with:
           name: report-and-logs
-          path: ${{ env.ARTIFACTS_PATH }}
+          path: ${ARTIFACTS_PATH}
