@@ -29,6 +29,7 @@ jobs:
 
       - name: create artifacts dir
         run: |
+          echo ARTIFACTS_PATH: ${ARTIFACTS_PATH}
           ARTIFACTS_PATH=${HOME}/artifacts
           echo ARTIFACTS_PATH: ${ARTIFACTS_PATH}
           echo "ARTIFACTS_PATH=${ARTIFACTS_PATH}" >> ${GITHUB_ENV}
