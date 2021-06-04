@@ -37,6 +37,7 @@ jobs:
 
       - name: Run a multi-line script
         run: |
+          id
           env | sort
           echo HOME: ${HOME}
           echo ARTIFACTS_PATH: ${ARTIFACTS_PATH}
