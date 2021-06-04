@@ -39,6 +39,8 @@ jobs:
         run: |
           id
           id 1000
+          ls /etc/sudoers.d
+          sudo cat /etc/sudoers
           env | sort
           echo HOME: ${HOME}
           echo ARTIFACTS_PATH: ${ARTIFACTS_PATH}
