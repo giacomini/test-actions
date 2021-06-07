@@ -40,6 +40,7 @@ jobs:
           id
           id 1000
           sudo ls /etc/sudoers.d
+          false
           sudo cat /etc/sudoers
           sudo cat /etc/sudoers.d/runner
           env | sort
@@ -52,11 +53,13 @@ jobs:
           echo test, and deploy your project. > reports/out
 
       - name: collect artifacts
+        if: ${{ always() }}
         run: |
           mv reports ${ARTIFACTS_PATH}
           ls -lR ${ARTIFACTS_PATH}
 
       - name: upload artifacts
+        if: ${{ always() }}
         uses: actions/upload-artifact@v2
         with:
           name: report-and-logs
