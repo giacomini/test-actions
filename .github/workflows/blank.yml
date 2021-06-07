@@ -40,7 +40,6 @@ jobs:
           id
           id 1000
           sudo ls /etc/sudoers.d
-          false
           sudo cat /etc/sudoers
           sudo cat /etc/sudoers.d/runner
           env | sort
@@ -50,6 +49,7 @@ jobs:
           ls -lR ${ARTIFACTS_PATH}
           mkdir reports
           echo Add other actions to build, > reports/out
+          false
           echo test, and deploy your project. > reports/out
 
       - name: collect artifacts
